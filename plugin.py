@@ -231,6 +231,10 @@ def find_module(window, module):
     project_path = ctx['project_path']
     webpack_modules = window.active_view().settings().get('webpack_resolve_modules')
     webpack_extensions = window.active_view().settings().get('webpack_resolve_extensions') or get_setting('resolve_extensions')
+    webpack_aliases = window.active_view().settings().get('webpack_resolve_alias') or get_setting('resolve_alias')
+
+    for attr, value in webpack_aliases.items():
+      module = re.sub(r"^" + attr, value, module)
 
     match = find_import_module(module, project_path, webpack_modules, webpack_extensions)
 

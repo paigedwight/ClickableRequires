@@ -83,8 +83,7 @@ class RequireEventListener(sublime_plugin.EventListener):
     self._underline_regions(view)
 
   def on_hover(self, view, point, hover_zone):
-    if not get_setting('show_popup_on_hover') \
-      or not self._assert_in_right_file(view):
+    if not get_setting('show_popup_on_hover'):
       return
 
     regions = self._find_regions(view)

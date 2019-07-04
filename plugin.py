@@ -251,10 +251,12 @@ def find_import_module(module, project_path, webpack_modules, webpack_extensions
   for root in webpack_modules:
     for extension in webpack_extensions:
       folder_path = os.path.join(project_path, root)
+      module_basename = module.split("/")[-1]
 
       file = returnIfFile(os.path.join(folder_path, module)) \
         or returnIfFile(os.path.join(folder_path, module + extension)) \
-        or returnIfFile(os.path.join(folder_path, 'index' + extension))
+        or returnIfFile(os.path.join(folder_path, module + '/' + module_basename + extension)) \
+        or returnIfFile(os.path.join(folder_path, module + '/index' + extension))
 
       if file:
         return file

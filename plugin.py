@@ -221,6 +221,7 @@ def open_module_file(window, module):
 def find_module(window, module):
   ctx = window.extract_variables()
   file_path = ctx['file_path']
+  settings = window.active_view().settings()
 
   match = find_require_module(module, file_path)
 
@@ -228,13 +229,15 @@ def find_module(window, module):
     log('Found require module: ', match)
 
   if not match or not returnIfFile(match):
-    project_path = ctx['project_path']
+    project_path = window.project_data()['folders'][0]['path']
     webpack_modules = window.active_view().settings().get('webpack_resolve_modules')
     webpack_extensions = window.active_view().settings().get('webpack_resolve_extensions') or get_setting('resolve_extensions')
     webpack_aliases = window.active_view().settings().get('webpack_resolve_alias') or get_setting('resolve_alias')
 
     for attr, value in webpack_aliases.items():
       module = re.sub(r"^" + attr, value, module)
+      # print(project_path)
+      # print(module)
 
     match = find_import_module(module, project_path, webpack_modules, webpack_extensions)
 
